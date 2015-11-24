@@ -3,6 +3,7 @@ GitReplay with Bash
 P532 - Sub-Project : Bash Script to replay commits one at a time to test builds
 ----------
 
+<<<<<<< HEAD
 This script is not directory specific. When executed, the script will make temporary directories in the current folder and remove them when it's finished.
 
 Important variables 
@@ -33,3 +34,6 @@ chmod +x p532-git-script.sh
 ```
 ./p532-git-script.sh git@github.com:user/repository-name.git
 ```
+=======
+
+>>>>>>> f79d61b... Create README.md
