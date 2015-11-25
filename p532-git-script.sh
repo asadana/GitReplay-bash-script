@@ -3,7 +3,7 @@
 # GitReplay with Bash
 # P532 - Sub-project
 
-# Made By: Ankit Sadana, Mrunal Lele, Pranav Pande, Rohith, Sairam Rakshith
+# Made By: Ankit Sadana, Mrunal Lele, Pranav Pande, Rohith Nedunuri, Sairam Rakshith Bhyravabhotla
 # Made On: 11/24/2015
 
 # Last Edited By: Ankit Sadana
