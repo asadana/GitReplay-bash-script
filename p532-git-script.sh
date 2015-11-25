@@ -7,7 +7,7 @@
 # Made On: 11/24/2015
 
 # Last Edited By: Ankit Sadana
-# Last Edited On: 11/24/2015
+# Last Edited On: 11/25/2015
 
 # Source : git@github.com:asadana/GitReplay-bash-script.git
 
@@ -21,14 +21,19 @@ if [ ! ${1: -4} == ".git" ]; then
     exit 1
 fi
 
+# repoName : Git SSH of the repo that needs to be replayed
 repoName=$1
-
+# repoReplayGit : Git SSH of the repo that repoName will be replayed in
 repoReplayGit=git@github.com:asadana/GitReplay-playground.git
-
-tempFolder=temp
+#
 replayFolder="replay-repo"
+#
+delay=15s
 
+# Function reset the git 
 resetGit () {
+	# Initializing a new git and forcing it on the repoReplayGit repository
+	local tempFolder=temp
 	mkdir $tempFolder && cd $tempFolder
 	git init
 	echo "Something to write" >> .temp
@@ -40,13 +45,13 @@ resetGit () {
 }
 
 printEcho () {
-echo
-echo =================================
-echo
+	echo
+	echo =================================
+	echo
 }
 
 # Cloning the source-repo temporarily
-cloneGit () {
+replayGit () {
 	printEcho
 	git clone $repoReplayGit $replayFolder && cd $replayFolder
 	printEcho
@@ -59,7 +64,8 @@ cloneGit () {
 	for value in $(git rev-list --reverse src/master); do
 		git cherry-pick $value
 		git push origin master
-		sleep 15s
+		printEcho
+		sleep $delay
 	done
 
 	echo All done
@@ -68,6 +74,6 @@ cloneGit () {
 }
 
 resetGit
-cloneGit
+replayGit
 
 
