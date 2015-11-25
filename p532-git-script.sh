@@ -59,6 +59,7 @@ cloneGit () {
 	for value in $(git rev-list --reverse src/master); do
 		git cherry-pick $value
 		git push origin master
+		sleep 15s
 	done
 
 	echo All done
