@@ -21,3 +21,18 @@ if [ ! ${1: -4} == ".git" ]; then
     exit 1
 fi
 
+accessRepo () {
+	cd source-repo
+}
+
+# Cloning the source-repo temporarily
+git clone $1 source-repo
+accessRepo
+
+
+# resetting the repo where git commits will replay
+
+# 
+git rev-list --reverse master --not --remotes
+
+
