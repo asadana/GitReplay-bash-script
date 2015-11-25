@@ -23,21 +23,50 @@ fi
 
 repoName=$1
 
-displaySHA () {
-	git rev-list --reverse master --not --remotes
+repoReplayGit=git@github.com:asadana/GitReplay-playground.git
+
+tempFolder=temp
+replayFolder="replay-repo"
+
+resetGit () {
+	mkdir $tempFolder && cd $tempFolder
+	git init
+	echo "Something to write" >> .temp
+	git add .temp
+	git commit -am "Initial commit"
+	git remote add origin $repoReplayGit
+	git push --force --set-upstream origin master
+	cd .. && rm -rf $tempFolder
+}
+
+printEcho () {
+echo
+echo =================================
+echo
 }
 
 # Cloning the source-repo temporarily
 cloneGit () {
-	git clone $repoName source-repo && cd source-repo
+	printEcho
+	git clone $repoReplayGit $replayFolder && cd $replayFolder
+	printEcho
 	pwd
+	printEcho
+	git remote add src $repoName
+	git fetch src
+	printEcho
 
-	for value in $(git rev-list --reverse master); do
-		echo "Ankit" $value
+	for value in $(git rev-list --reverse src/master); do
+		git cherry-pick $value
+		git push origin master
 	done
-	cd ./../ && rm -rf source-repo
+
+	echo All done
+	echo Deleting temporay folder
+	cd ./../ && rm -rf $replayFolder
 }
 
+resetGit
 cloneGit
 
 
