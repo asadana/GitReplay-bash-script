@@ -21,13 +21,17 @@ if [ ! ${1: -4} == ".git" ]; then
     exit 1
 fi
 
-accessRepo () {
-	cd source-repo
-}
+repoName=$1
 
 # Cloning the source-repo temporarily
-git clone $1 source-repo
-accessRepo
+cloneGit () {
+	git clone $repoName source-repo && cd source-repo
+	pwd
+}
+
+cloneGit
+
+
 
 
 # resetting the repo where git commits will replay
