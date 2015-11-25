@@ -14,4 +14,10 @@
 # This script is meant to take an SSH to the source repo in git
 # Example of SSH: git@github.com:user/repository-name.git
 
-echo Hello People
+# Script takes an input of Git SSH 
+# If condition simply checks if it's a valid SSH format
+if [ ! ${1: -4} == ".git" ]; then
+    echo "$(basename $0): Please enter a valid Git SSH." 1>&2
+    exit 1
+fi
+
