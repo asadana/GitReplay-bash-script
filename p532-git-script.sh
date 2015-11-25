@@ -23,20 +23,21 @@ fi
 
 repoName=$1
 
+displaySHA () {
+	git rev-list --reverse master --not --remotes
+}
+
 # Cloning the source-repo temporarily
 cloneGit () {
 	git clone $repoName source-repo && cd source-repo
 	pwd
+
+	for value in $(git rev-list --reverse master); do
+		echo "Ankit" $value
+	done
+	cd ./../ && rm -rf source-repo
 }
 
 cloneGit
-
-
-
-
-# resetting the repo where git commits will replay
-
-# 
-git rev-list --reverse master --not --remotes
 
 
