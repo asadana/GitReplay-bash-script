@@ -18,7 +18,7 @@
 # Example of call: ./p532-git-script.sh git@github.com:user/repository-to-replay.git
 
 # If condition simply checks if it's a valid SSH format
-if [ ! -d .git ]; then
+if [ ! -d $1/.git ]; then
     echo "$(basename $0): not a git directory." 1>&2
     exit 1
 fi
@@ -29,7 +29,7 @@ repoName=$1
 # repoReplayGit : Git SSH of the repo that repoName will be replayed in
 # You need have push access to this repo
 # NOTE: This repository will be reintialized and all commits from this repo will be erased before replay.
-repoReplayGit=./../repos/fall2015/project/sonartest
+repoReplayGit=./../GitReplay-playground
 
 # Name of the temporary folder that will be generated in the current directory
 # This is deleted when the script is done
