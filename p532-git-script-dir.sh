@@ -66,7 +66,7 @@ replayGit () {
 	
 	# Cloning the repoReplayGit
 	printEcho
-	git clone $repoReplayGit $replayFolder && cd $replayFolder
+	git clone $repoReplayGit ./../$replayFolder && cd ./../$replayFolder
 	printEcho
 	# Adding the repoName as a remote and fetching it
 	git remote add src $repoName
