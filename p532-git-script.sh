@@ -7,21 +7,23 @@
 # Made On: 11/24/2015
 
 # Last Edited By: Ankit Sadana
-# Last Edited On: 11/26/2015
+# Last Edited On: 12/04/2015
 
 # Source : git@github.com:asadana/GitReplay-bash-script.git
 
 # This script is meant to take an SSH to the source repo in git
 # Example of SSH: git@github.com:user/repository-name.git
+# Example of SSH for server: userName@server.address.edu:~/path/to/repo
 
 # Script takes an input argument for the repository you want to replay when called
 # Example of call: ./p532-git-script.sh git@github.com:user/repository-to-replay.git
+# Example of call for server: ./p532-git-script.sh server: userName@server.address.edu:~/path/to/repo
 
 # If condition simply checks if it's a valid SSH format
-if [ ! ${1: -4} == ".git" ]; then
-    echo "$(basename $0): Please enter a valid Git SSH." 1>&2
-    exit 1
-fi
+# if [ ! ${1: -4} == ".git" ] ; then
+#     echo "$(basename $0): Please enter a valid Git SSH." 1>&2
+#     exit 1
+# fi
 
 # repoName : Git SSH of the repo that needs to be replayed
 repoName=$1
@@ -38,7 +40,7 @@ replayFolder="replay-repo"
 # dealy : The time gap between two commit/push
 # Default value : 15s (15 seconds)
 # Syntax to edit (lookup 'sleep'): [Numerical][s,m,h,d] (s-seconds, m-minutes, h-hours, d-days)
-delay=1s
+delay=5s
 
 # Function to reintialize and empty out the repoReplayGit
 resetGit () {
@@ -51,6 +53,8 @@ resetGit () {
 	git commit -am "Initial commit"
 	git remote add origin $repoReplayGit
 	git push --force --set-upstream origin master
+	echo
+	echo "The repository for replay has been reintialized"
 	cd .. && rm -rf $tempFolder
 }
 
@@ -62,7 +66,7 @@ printEcho () {
 }
 
 # Function to get SHAs from repoName and commit them one at a time to repoReplayGit
-replayGit () {
+replayMenu () {
 	
 	# Cloning the repoReplayGit
 	printEcho
@@ -73,13 +77,23 @@ replayGit () {
 	git fetch src
 	printEcho
 
+
+	commitsArray=("")
 	# For loop gets the list of commit SHA from remote
 	# Each SHA is then used to commit to repoReplayGit
 	for value in $(git rev-list --reverse src/master); do
-		sleep $delay
-		git cherry-pick $value
-		git push origin master
-		printEcho
+		echo $value
+		commitsArray+=("$value")
+		# sleep $delay
+		# git cherry-pick $value
+		# git push origin master
+		# printEcho
+	done
+
+	printEcho
+	echo ${#commitsArray[@]}
+	for (( i = 0; i < ${#commitsArray[@]}; i++ )); do
+		echo ${commitsArray[i]}
 	done
 
 	# Clean up. Removing local temporary folder
@@ -90,6 +104,6 @@ replayGit () {
 
 # Function calls
 resetGit
-replayGit
+replayMenu
 
 
