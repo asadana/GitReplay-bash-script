@@ -92,15 +92,33 @@ replayMenu () {
 
 	printEcho
 	commitArrayLength=${#commitsArray[@]}
+	local readOption
 
-	while [[ $commitArrayLength -gt 0 ]]; do
-		echo ${commitsArray[${#commitsArray[@]} - commitArrayLength]}
-		echo $commitArrayLength
-		((commitArrayLength--))
+	while [ $commitArrayLength -gt 0 ] || [ $readOption -eq 4 ]; do
+
+		echo "1) Replay next commit"
+		echo "2) Replay next n commits"
+		echo "3) Replay all remaining commits"
+		echo "4) Exit"
+
+		read -p "Please enter your choice: " readOption
+		echo
+
+		case $readOption in
+			1) echo "Replaying next commit";;
+			2) echo "Replaying next n commits";;
+			2) echo "Replaying all commits";;
+			3) echo "Exiting..."
+				break;
+		esac
+		echo
+		# echo ${commitsArray[${#commitsArray[@]} - commitArrayLength]}
+		# echo $commitArrayLength
+		# ((commitArrayLength--))
 	done
 
 	printEcho
-	# PS3="Please enter your choice: "
+	# 
 	# QUIT="Exiting program..."
 	printEcho
 	# echo ${#commitsArray[@]}
