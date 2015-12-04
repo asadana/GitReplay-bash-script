@@ -91,10 +91,22 @@ replayMenu () {
 	done
 
 	printEcho
-	echo ${#commitsArray[@]}
-	for (( i = 0; i < ${#commitsArray[@]}; i++ )); do
-		echo ${commitsArray[i]}
+	commitArrayLength=${#commitsArray[@]}
+
+	while [[ $commitArrayLength -gt 0 ]]; do
+		echo ${commitsArray[${#commitsArray[@]} - commitArrayLength]}
+		echo $commitArrayLength
+		((commitArrayLength--))
 	done
+
+	printEcho
+	# PS3="Please enter your choice: "
+	# QUIT="Exiting program..."
+	printEcho
+	# echo ${#commitsArray[@]}
+	# for (( i = 0; i < ${#commitsArray[@]}; i++ )); do
+	# 	echo ${commitsArray[i]}
+	# done
 
 	# Clean up. Removing local temporary folder
 	echo All done
