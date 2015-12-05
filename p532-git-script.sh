@@ -56,14 +56,15 @@ resetGit () {
 	cd .. && rm -rf $tempFolder
 }
 
-# Functionn to divide each operation done, just for visual aid
+# Functionn to print a divider to seperate different operations 
+# This is just for visual aid
 printEcho () {
 	echo
 	echo =================================
 	echo
 }
 
-# Function to get SHAs from repoName and commit them one at a time to repoReplayGit
+# Function to get SHAs from repoName and print a ReplayMenu for the user
 replayMenu () {
 	
 	# Cloning the repoReplayGit
@@ -110,8 +111,11 @@ replayMenu () {
 		read -p "Please enter your choice: " readOption
 		echo
 
+		# Menu options are handled by case
 		case $readOption in
-			1) 
+
+			1) 	# Case for Replay Next Commit
+				
 				printEcho
 				echo "Replaying next commit"
 				printEcho
@@ -119,10 +123,14 @@ replayMenu () {
 				((commitArrayLength--))
 				sleep $delay
 				;;
-			2)
+			
+			2)	# Case for Replaying n number of commits
+ 				
  				read -p "Enter the number of commits you want to replay forward: " count
+ 				# Checking to ensure number entered is not bigger than number of commits left
 				if [ ! $count -gt $commitArrayLength ]
 				then
+					# Looping to the commit next n commits
 					for (( i = $count; i > 0; i-- )); do
 						printEcho
 						echo ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
@@ -135,7 +143,9 @@ replayMenu () {
 					echo "Remaining commits : $commitArrayLength"
 				fi
 				;;
-			3) 
+			
+			3) 	# 
+
 				printEcho
 				echo "Replaying all remaining commits"
 
@@ -146,11 +156,13 @@ replayMenu () {
 						sleep $delay
 					done	
 				;;
-			4) 
+			
+			4) 	# Case for exiting ReplayMenu
 				echo
 				echo "Exiting..."
 				;;
-			*)
+			
+			*)	# Default case 
 				echo
 				echo "Invalid choice. Please try again"
 		esac
