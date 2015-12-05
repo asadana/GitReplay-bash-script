@@ -7,9 +7,11 @@
 # Made On: 11/24/2015
 
 # Last Edited By: Ankit Sadana
-# Last Edited On: 12/04/2015
+# Last Edited On: 12/05/2015
 
 # Source : git@github.com:asadana/GitReplay-bash-script.git
+
+# ============================================================
 
 # This script is meant to take an SSH to the source repo in git
 # Example of SSH: git@github.com:user/repository-name.git
@@ -19,11 +21,7 @@
 # Example of call: ./p532-git-script.sh git@github.com:user/repository-to-replay.git
 # Example of call for server: ./p532-git-script.sh server: userName@server.address.edu:~/path/to/repo
 
-# If condition simply checks if it's a valid SSH format
-# if [ ! ${1: -4} == ".git" ] ; then
-#     echo "$(basename $0): Please enter a valid Git SSH." 1>&2
-#     exit 1
-# fi
+# ============================================================
 
 # repoName : Git SSH of the repo that needs to be replayed
 repoName=$1
@@ -80,7 +78,7 @@ replayMenu () {
 	# Intializing the empty array
 	commitsArray=("")
 	# For loop gets the list of commit SHA from remote
-	# Each SHA is then used to commit to repoReplayGit
+	# Each SHA is added the commitsArray
 	for value in $(git rev-list --reverse src/master); do
 		echo $value
 		commitsArray+=("$value")
@@ -91,10 +89,16 @@ replayMenu () {
 	done
 
 	printEcho
+	# Storing the length of commitsArray in commitArrayLength
 	commitArrayLength=${#commitsArray[@]}
+	# Decreasing the length of commitArrayLength by 1 to account for empty initialization entry
 	((commitArrayLength--))
+
+	# Local variable to store input from the menu
 	local readOption
 
+	# While loop displays a ReplayMenu till commitArrayLength is 0
+	# Or the user chooses the exit (#4) option
 	while [ $commitArrayLength -gt 0 ] || [ $readOption -eq 4 ]; do
 
 		echo "1) Replay next commit"
