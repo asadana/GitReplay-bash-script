@@ -88,7 +88,6 @@ replayMenu () {
 		# printEcho
 	done
 
-	printEcho
 	# Storing the length of commitsArray in commitArrayLength
 	commitArrayLength=${#commitsArray[@]}
 	# Decreasing the length of commitArrayLength by 1 to account for empty initialization entry
@@ -101,27 +100,34 @@ replayMenu () {
 	# Or the user chooses the exit (#4) option
 	while [ $commitArrayLength -gt 0 ] || [ $readOption -eq 4 ]; do
 
+		# ReplayMenu options
+		printEcho
 		echo "1) Replay next commit"
 		echo "2) Replay next n commits"
 		echo "3) Replay all remaining commits"
 		echo "4) Exit"
-
+		# User input from the menu
 		read -p "Please enter your choice: " readOption
 		echo
 
 		case $readOption in
 			1) 
+				printEcho
 				echo "Replaying next commit"
+				printEcho
 				echo ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
 				((commitArrayLength--))
+				sleep $delay
 				;;
 			2)
  				read -p "Enter the number of commits you want to replay forward: " count
 				if [ ! $count -gt $commitArrayLength ]
 				then
 					for (( i = $count; i > 0; i-- )); do
+						printEcho
 						echo ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
 						((commitArrayLength--))
+						sleep $delay
 					done
 				else
 					echo
@@ -130,35 +136,28 @@ replayMenu () {
 				fi
 				;;
 			3) 
+				printEcho
 				echo "Replaying all remaining commits"
-				echo
+
 				for (( i = $commitArrayLength; i > 0; i-- )); do
+						printEcho
 						echo ${commitsArray[${#commitsArray[@]} - i]}
 						((commitArrayLength--))
+						sleep $delay
 					done	
 				;;
 			4) 
+				echo
 				echo "Exiting..."
-				break
 				;;
 			*)
+				echo
 				echo "Invalid choice. Please try again"
 		esac
-		echo
-		# echo ${commitsArray[${#commitsArray[@]} - commitArrayLength]}
-		# echo $commitArrayLength
-		# ((commitArrayLength--))
+
 	done
 
 	printEcho
-	# 
-	# QUIT="Exiting program..."
-	printEcho
-	# echo ${#commitsArray[@]}
-	# for (( i = 0; i < ${#commitsArray[@]}; i++ )); do
-	# 	echo ${commitsArray[i]}
-	# done
-
 	# Clean up. Removing local temporary folder
 	echo All done
 	echo Deleting temporay folder
