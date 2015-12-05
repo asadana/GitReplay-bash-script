@@ -124,6 +124,8 @@ replayMenu () {
 				git push origin master
 				((commitArrayLength--))
 				sleep $delay
+				echo
+				echo "Remaining commits: $commitArrayLength"
 				;;
 			
 			2)	# Case for Replaying n number of commits
@@ -139,6 +141,8 @@ replayMenu () {
 						git push origin master
 						((commitArrayLength--))
 						sleep $delay
+						echo
+						echo "Remaining commits: $commitArrayLength"
 					done
 				else
 					echo
@@ -159,6 +163,8 @@ replayMenu () {
 						git push origin master
 						((commitArrayLength--))
 						sleep $delay
+						echo
+						echo "Remaining commits: $commitArrayLength"
 					done	
 				;;
 			
@@ -186,7 +192,7 @@ welcome () {
 
 	printEcho
 	echo "Welcome to GitReplay Bash Script"
-	sleep 2
+	sleep 1
 }
 
 # Welcome
