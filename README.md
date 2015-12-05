@@ -1,6 +1,6 @@
 GitReplay with Bash
 ===================
-P532 - Sub-Project : Bash Script to replay commits one at a time to test builds
+P532 - Sub-Project : Bash Script to display a menu with different options to replay commits.
 ----------
 
 This script is not directory specific. When executed, the script will make temporary directories in the current folder and remove them when it's finished.
@@ -27,10 +27,12 @@ chmod +x p532-git-script.sh
 
 3. Ensure that git repository in the script "repoReplayGit" points to an empty/useless repository since it will be erased and reintialized before replay. Also make sure you have push access to this repository
 
-4. Get the Git SSH (example: git@github.com:user/repository-name.git) for the repository you want to replay.
+4. Get the Git SSH (example: git@github.com:user/repository-name.git or userName@server.address.edu:~/path/to/repo) for the repository you want to replay.
 
 5. Run the script with the Git SSH from step 4 as the argument
 ```
 ./p532-git-script.sh git@github.com:user/repository-name.git
+or 
+./p532-git-script.sh userName@server.address.edu:~/path/to/repo
 ```
 =======
