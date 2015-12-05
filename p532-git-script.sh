@@ -4,12 +4,14 @@
 # P532 - Sub-project
 
 # Made By: Ankit Sadana
+# Username: asadana
 # Made On: 11/24/2015
 
 # Last Edited By: Ankit Sadana
+# Username: asadana
 # Last Edited On: 12/05/2015
 
-# Source : git@github.com:asadana/GitReplay-bash-script.git
+# Source : https://github.com/asadana/GitReplay-bash-script
 
 # ============================================================
 
