@@ -105,11 +105,39 @@ replayMenu () {
 		echo
 
 		case $readOption in
-			1) echo "Replaying next commit";;
-			2) echo "Replaying next n commits";;
-			2) echo "Replaying all commits";;
-			3) echo "Exiting..."
-				break;
+			1) 
+				echo "Replaying next commit"
+				echo ${commitsArray[${#commitsArray[@]} - commitArrayLength]}
+				((commitArrayLength--))
+				;;
+			2) 
+				read -p "Enter the number of commits you want to replay forward: " count
+				if [ ! $count -gt $commitArrayLength ]
+				then
+					for (( i = $count; i > 0; i-- )); do
+						echo ${commitsArray[${#commitsArray[@]} - commitArrayLength]}
+						((commitArrayLength--))
+					done
+				else
+					echo
+					echo "The number of replay commits cannot be greater than remaining commits."
+					echo "Remaining commits : $commitArrayLength"
+				fi
+				;;
+			3) 
+				echo "Replaying all remaining commits"
+				echo
+				for (( i = $commitArrayLength; i > 0; i-- )); do
+						echo ${commitsArray[${#commitsArray[@]} - i]}
+						((commitArrayLength--))
+					done	
+				;;
+			4) 
+				echo "Exiting..."
+				break
+				;;
+			*)
+				echo "Invalid choice. Please try again"
 		esac
 		echo
 		# echo ${commitsArray[${#commitsArray[@]} - commitArrayLength]}
