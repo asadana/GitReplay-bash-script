@@ -38,9 +38,9 @@ repoReplayGit=git@github.com:asadana/GitReplay-playground.git
 replayFolder="replay-repo"
 
 # dealy : The time gap between two commit/push
-# Default value : 15s (15 seconds)
+# Default value : 30s (30 seconds)
 # Syntax to edit (lookup 'sleep'): [Numerical][s,m,h,d] (s-seconds, m-minutes, h-hours, d-days)
-delay=5s
+delay=30s
 
 # Function to reintialize and empty out the repoReplayGit
 resetGit () {
