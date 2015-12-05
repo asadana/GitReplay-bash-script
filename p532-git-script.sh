@@ -3,7 +3,7 @@
 # GitReplay with Bash
 # P532 - Sub-project
 
-# Made By: Ankit Sadana, Mrunal Lele, Pranav Pande, Rohith Nedunuri, Sairam Rakshith Bhyravabhotla
+# Made By: Ankit Sadana
 # Made On: 11/24/2015
 
 # Last Edited By: Ankit Sadana
@@ -42,6 +42,11 @@ delay=5s
 
 # Function to reintialize and empty out the repoReplayGit
 resetGit () {
+
+	printEcho
+	echo "Resetting the existing replay repository"
+	printEcho
+
 	# Initializing a new git and forcing it on the repoReplayGit repository
 	local tempFolder=temp
 	mkdir $tempFolder && cd $tempFolder
@@ -51,6 +56,7 @@ resetGit () {
 	git commit -am "Initial commit"
 	git remote add origin $repoReplayGit
 	git push --force --set-upstream origin master
+	sleep $delay
 	echo
 	echo "The repository for replay has been reintialized"
 	cd .. && rm -rf $tempFolder
@@ -81,12 +87,7 @@ replayMenu () {
 	# For loop gets the list of commit SHA from remote
 	# Each SHA is added the commitsArray
 	for value in $(git rev-list --reverse src/master); do
-		echo $value
 		commitsArray+=("$value")
-		# sleep $delay
-		# git cherry-pick $value
-		# git push origin master
-		# printEcho
 	done
 
 	# Storing the length of commitsArray in commitArrayLength
@@ -119,7 +120,8 @@ replayMenu () {
 				printEcho
 				echo "Replaying next commit"
 				printEcho
-				echo ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
+				git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
+				git push origin master
 				((commitArrayLength--))
 				sleep $delay
 				;;
@@ -133,7 +135,8 @@ replayMenu () {
 					# Looping to the commit next n commits
 					for (( i = $count; i > 0; i-- )); do
 						printEcho
-						echo ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
+						git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
+						git push origin master
 						((commitArrayLength--))
 						sleep $delay
 					done
@@ -144,14 +147,16 @@ replayMenu () {
 				fi
 				;;
 			
-			3) 	# 
+			3) 	# Case for replaying all remaining commits
 
 				printEcho
 				echo "Replaying all remaining commits"
 
+				# Loop checks the length of commitArrayLength and uses all remaining commits
 				for (( i = $commitArrayLength; i > 0; i-- )); do
 						printEcho
-						echo ${commitsArray[${#commitsArray[@]} - i]}
+						git cherry-pick ${commitsArray[${#commitsArray[@]} - i]}
+						git push origin master
 						((commitArrayLength--))
 						sleep $delay
 					done	
@@ -160,6 +165,7 @@ replayMenu () {
 			4) 	# Case for exiting ReplayMenu
 				echo
 				echo "Exiting..."
+				break
 				;;
 			
 			*)	# Default case 
@@ -171,10 +177,20 @@ replayMenu () {
 
 	printEcho
 	# Clean up. Removing local temporary folder
-	echo All done
 	echo Deleting temporay folder
 	cd ./../ && rm -rf $replayFolder
 }
+
+# Function to welcome the user to the script
+welcome () {
+
+	printEcho
+	echo "Welcome to GitReplay Bash Script"
+	sleep 2
+}
+
+# Welcome
+welcome
 
 # Function calls
 resetGit
