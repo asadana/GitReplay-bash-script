@@ -77,7 +77,7 @@ replayMenu () {
 	git fetch src
 	printEcho
 
-
+	# Intializing the empty array
 	commitsArray=("")
 	# For loop gets the list of commit SHA from remote
 	# Each SHA is then used to commit to repoReplayGit
@@ -92,6 +92,7 @@ replayMenu () {
 
 	printEcho
 	commitArrayLength=${#commitsArray[@]}
+	((commitArrayLength--))
 	local readOption
 
 	while [ $commitArrayLength -gt 0 ] || [ $readOption -eq 4 ]; do
@@ -107,15 +108,15 @@ replayMenu () {
 		case $readOption in
 			1) 
 				echo "Replaying next commit"
-				echo ${commitsArray[${#commitsArray[@]} - commitArrayLength]}
+				echo ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
 				((commitArrayLength--))
 				;;
-			2) 
-				read -p "Enter the number of commits you want to replay forward: " count
+			2)
+ 				read -p "Enter the number of commits you want to replay forward: " count
 				if [ ! $count -gt $commitArrayLength ]
 				then
 					for (( i = $count; i > 0; i-- )); do
-						echo ${commitsArray[${#commitsArray[@]} - commitArrayLength]}
+						echo ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
 						((commitArrayLength--))
 					done
 				else
