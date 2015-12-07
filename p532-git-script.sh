@@ -37,10 +37,9 @@ repoReplayGit=git@github.com:asadana/GitReplay-playground.git
 # This is deleted when the script is done
 replayFolder="replay-repo"
 
-# dealy : The time gap between two commit/push
-# Default value : 30s (30 seconds)
-# Syntax to edit (lookup 'sleep'): [Numerical][s,m,h,d] (s-seconds, m-minutes, h-hours, d-days)
-delay=30s
+# dealy : The time gap between two commit/push (in seconds)
+# Default value : 40 (40 seconds)
+delay=40
 
 # Function to reintialize and empty out the repoReplayGit
 resetGit () {
@@ -58,7 +57,7 @@ resetGit () {
 	git commit -am "Initial commit"
 	git remote add origin $repoReplayGit
 	git push --force --set-upstream origin master
-	sleep $delay
+	sleep 2s
 	echo
 	echo "The repository for replay has been reintialized"
 	cd .. && rm -rf $tempFolder
@@ -70,6 +69,26 @@ printEcho () {
 	echo
 	echo =================================
 	echo
+}
+
+#Function to give time for Bamboo to finish building before next commit is pushed
+waitTimer () {
+	local timerVar=$delay
+	echo
+	# while loop counts down the delay and displays it
+	while [[ $timerVar -ge 0 ]]; do
+		echo -ne "Waiting for Bamboo to finish building: $timerVar\033[K\r"
+		sleep 1s
+		: $((timerVar--))
+	done
+}
+
+# Function to welcome the user to the script
+welcome () {
+
+	printEcho
+	echo "Welcome to GitReplay Bash Script"
+	sleep 1
 }
 
 # Function to get SHAs from repoName and print a ReplayMenu for the user
@@ -125,7 +144,7 @@ replayMenu () {
 				git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
 				git push origin master
 				((commitArrayLength--))
-				sleep $delay
+				waitTimer
 				echo
 				echo "Remaining commits: $commitArrayLength"
 				;;
@@ -142,7 +161,7 @@ replayMenu () {
 						git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
 						git push origin master
 						((commitArrayLength--))
-						sleep $delay
+						waitTimer
 						echo
 						echo "Remaining commits: $commitArrayLength"
 					done
@@ -164,7 +183,7 @@ replayMenu () {
 						git cherry-pick ${commitsArray[${#commitsArray[@]} - i]}
 						git push origin master
 						((commitArrayLength--))
-						sleep $delay
+						waitTimer
 						echo
 						echo "Remaining commits: $commitArrayLength"
 					done	
@@ -189,13 +208,6 @@ replayMenu () {
 	cd ./../ && rm -rf $replayFolder
 }
 
-# Function to welcome the user to the script
-welcome () {
-
-	printEcho
-	echo "Welcome to GitReplay Bash Script"
-	sleep 1
-}
 
 # Welcome
 welcome
