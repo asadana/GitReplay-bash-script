@@ -11,9 +11,8 @@ Important variables
 *repoReplayGit* : Should contain Git SSH of empty/useless repository which you have push access to.
 >*Note*: This repository will be reintialized and all commits from this repo will be erased before replay.
 
-*delay* : This is the time delay between two commit/push. By default it is set to 30s (30 seconds).
-Syntax to edit this value: [Numerical][s,m,h]. Here s-seconds, m-minutes and h-hours.
-For further information look up 'sleep'
+*delay* : This is the time delay between two commit/push (in seconds). By default it is set to 40 (40 seconds).
+This variable just contains a numerical value, that is used to contdown between commits.
 
 How to run
 -------------
