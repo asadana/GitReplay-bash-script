@@ -180,14 +180,19 @@ replayMenu () {
 				# Loop checks the length of commitArrayLength and uses all remaining commits
 				for (( i = $commitArrayLength; i > 0; i-- )); do
 						printEcho
+
+						# If condition here is a two step process
+						# We get the parent SHA from git log using the current commit SHA
+						# Then using "wc -w" we count the words
+						# If it's more than one word/more than one SHA, then it's a merge commit
+						# And we have to specify the mainline with cherry-pick
 						if [[ $(git log --pretty=%P -n 1 ${commitsArray[${#commitsArray[@]} - i]} | wc -w ) -gt 1 ]]
     						then
-    							echo "Parent number: $(git log --pretty=%P -n 1 ${commitsArray[${#commitsArray[@]} - i]} | wc -w )"
         						git cherry-pick ${commitsArray[${#commitsArray[@]} - i]} --mainline 1
     					else
-    							echo "Parent number: $(git log --pretty=%P -n 1 ${commitsArray[${#commitsArray[@]} - i]} | wc -w )"
     					        git cherry-pick ${commitsArray[${#commitsArray[@]} - i]}
 					    fi
+					    
 						# git cherry-pick ${commitsArray[${#commitsArray[@]} - i]}
 						git push origin master
 						((commitArrayLength--))
