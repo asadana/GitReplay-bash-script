@@ -9,7 +9,7 @@
 
 # Last Edited By: Ankit Sadana
 # Username: asadana
-# Last Edited On: 12/05/2015
+# Last Edited On: 12/12/2015
 
 # Source : https://github.com/asadana/GitReplay-bash-script
 
@@ -39,7 +39,7 @@ replayFolder="replay-repo"
 
 # dealy : The time gap between two commit/push (in seconds)
 # Default value : 40 (40 seconds)
-delay=4
+delay=40
 
 # Function to reintialize and empty out the repoReplayGit
 resetGit () {
