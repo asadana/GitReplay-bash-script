@@ -105,8 +105,11 @@ replayMenu () {
 
 	# Intializing the empty array
 	commitsArray=("")
+
 	# For loop gets the list of commit SHA from remote
 	# Each SHA is added the commitsArray
+	# --first-parent is used to account for future branched use
+	# --reverse ensures we get the list in oldest to newest order
 	for value in $(git rev-list --first-parent --reverse src/master); do
 		commitsArray+=("$value")
 	done
@@ -141,7 +144,19 @@ replayMenu () {
 				printEcho
 				echo "Replaying next commit"
 				printEcho
-				git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
+		
+				# If condition here is a two step process
+				# We get the parent SHA from git log using the current commit SHA
+				# Then using "wc -w" we count the words
+				# If it's more than one word/more than one SHA, then it's a merge commit
+				# And we have to specify the mainline with cherry-pick
+				if [[ $(git log --pretty=%P -n 1 ${commitsArray[${#commitsArray[@]} - i]} | wc -w ) -gt 1 ]]
+					then
+						git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]} --mainline 1
+				else
+				        git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
+			    fi
+			    
 				git push origin master
 				((commitArrayLength--))
 				waitTimer
@@ -158,7 +173,19 @@ replayMenu () {
 					# Looping to the commit next n commits
 					for (( i = $count; i > 0; i-- )); do
 						printEcho
-						git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
+
+						# If condition here is a two step process
+						# We get the parent SHA from git log using the current commit SHA
+						# Then using "wc -w" we count the words
+						# If it's more than one word/more than one SHA, then it's a merge commit
+						# And we have to specify the mainline with cherry-pick
+						if [[ $(git log --pretty=%P -n 1 ${commitsArray[${#commitsArray[@]} - i]} | wc -w ) -gt 1 ]]
+    						then
+        						git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]} --mainline 1
+    					else
+    					        git cherry-pick ${commitsArray[${#commitsArray[@]} - $commitArrayLength]}
+					    fi
+					    
 						git push origin master
 						((commitArrayLength--))
 						waitTimer
@@ -192,7 +219,7 @@ replayMenu () {
     					else
     					        git cherry-pick ${commitsArray[${#commitsArray[@]} - i]}
 					    fi
-					    
+
 						# git cherry-pick ${commitsArray[${#commitsArray[@]} - i]}
 						git push origin master
 						((commitArrayLength--))
