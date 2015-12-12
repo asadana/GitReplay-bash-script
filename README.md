@@ -3,6 +3,8 @@ GitReplay with Bash
 P532 - Sub-Project : Bash Script to display a menu with different options to replay commits.
 ----------
 
+The script is written using Git and Bash, and can be used to grab the commits from one repository (say Repo1) and replay it in another one (say Repo2). The script resets the target repository, Repo2, by initializing a new local repository and forcing it on Repo2 upstream. The commits can be replayed incrementally using a Replay Menu.
+
 This script is not directory specific. When executed, the script will make temporary directories in the current folder and remove them when it's finished.
 
 Important variables 
