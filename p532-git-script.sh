@@ -109,11 +109,6 @@ replayMenu () {
 	# Each SHA is added the commitsArray
 	for value in $(git rev-list --first-parent --reverse src/master); do
 		commitsArray+=("$value")
-		echo 
-		echo $value
-		echo =
-		echo $(git log --pretty=%P -n 1 $value)
-		echo =
 	done
 
 	# Storing the length of commitsArray in commitArrayLength
@@ -185,12 +180,12 @@ replayMenu () {
 				# Loop checks the length of commitArrayLength and uses all remaining commits
 				for (( i = $commitArrayLength; i > 0; i-- )); do
 						printEcho
-						if [[ $(git show --summary --format="%P" ${commitsArray[${#commitsArray[@]} - i]} | wc -w ) -gt 1 ]]
+						if [[ $(git log --pretty=%P -n 1 ${commitsArray[${#commitsArray[@]} - i]} | wc -w ) -gt 1 ]]
     						then
-    							echo "Parent number: $(git show --summary --format="%P" ${commitsArray[${#commitsArray[@]} - i]} | wc -w )"
+    							echo "Parent number: $(git log --pretty=%P -n 1 ${commitsArray[${#commitsArray[@]} - i]} | wc -w )"
         						git cherry-pick ${commitsArray[${#commitsArray[@]} - i]} --mainline 1
     					else
-    							echo "Parent number: $(git show --summary --format="%P" ${commitsArray[${#commitsArray[@]} - i]} | wc -w )"
+    							echo "Parent number: $(git log --pretty=%P -n 1 ${commitsArray[${#commitsArray[@]} - i]} | wc -w )"
     					        git cherry-pick ${commitsArray[${#commitsArray[@]} - i]}
 					    fi
 						# git cherry-pick ${commitsArray[${#commitsArray[@]} - i]}
