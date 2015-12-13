@@ -40,6 +40,6 @@ How to run
 6. Menu options
 	> Replay Menu
 	>- **Replay next commit** : Replays the next commit in the list
-	>- **Replay next n commits** : Takes a numerical inut from the user, say *n*. Then pushes *n* number of commits.
+	>- **Replay next n commits** : Takes a numerical input from the user, say *n*. Then pushes *n* number of commits.
 	>- **Replay all remaining commits** : Replays all the remaining commits from the list
 	>- **Exit** : Exits the menu
